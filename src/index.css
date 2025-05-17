@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🎨 Global Styling */
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f9fafb;
+  color: #1f2937;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 💻 Code Styling */
+code {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.875rem;
+  background-color: #f3f4f6;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.3rem;
+}
+
+/* 🚀 Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 🌙 Dark Mode Styling */
+body.dark {
+  background-color: #0f172a; /* Tailwind slate-900 */
+  color: #f1f5f9;           /* Tailwind slate-100 */
+}
+
+/* 🔗 Link Styling */
+a {
+  @apply text-blue-600 hover:underline transition-colors duration-200;
+}
+
+/* ✏️ Input & Select Styling */
+input,
+select,
+textarea {
+  @apply rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent;
+}
+
+/* 🔘 Button Styling */
+button {
+  @apply font-semibold transition duration-200 ease-in-out;
+}
+
+/* 🖼️ Image Styling */
+img {
+  @apply select-none;
+}
