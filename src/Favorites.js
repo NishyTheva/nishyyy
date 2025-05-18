@@ -7,6 +7,7 @@ function Favorites({ favorites, removeFavorite, user }) {
       <h2 className="text-3xl font-bold text-center text-blue-700 dark:text-white mb-6">
         {user}'s Favorite Countries
       </h2>
+
       {favorites.length === 0 ? (
         <p className="text-center text-gray-500 dark:text-gray-400 text-lg">
           No favorites added yet.
@@ -15,7 +16,10 @@ function Favorites({ favorites, removeFavorite, user }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {favorites.map((country, index) => (
             <div key={index} className="relative group">
-              <CountryCard country={country} />
+              <CountryCard
+                country={country}
+                onClick={() => window.location.href = `/country/${country.cca3}`}
+              />
               <button
                 onClick={() => removeFavorite(country)}
                 className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-xs shadow-md transition duration-300"

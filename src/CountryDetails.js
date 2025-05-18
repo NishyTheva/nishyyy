@@ -7,6 +7,9 @@ function CountryDetails() {
   const navigate = useNavigate();
   const [country, setCountry] = useState(null);
   const [error, setError] = useState(null);
+  const [favorites, setFavorites] = useState(() =>
+    JSON.parse(localStorage.getItem('favorites')) || []
+  );
 
   useEffect(() => {
     fetch(`https://restcountries.com/v3.1/alpha/${code}`)
@@ -20,6 +23,15 @@ function CountryDetails() {
         setError('Could not load country details.');
       });
   }, [code]);
+
+  const addToFavorites = (country) => {
+    const exists = favorites.some((fav) => fav.cca3 === country.cca3);
+    if (!exists) {
+      const updated = [...favorites, country];
+      setFavorites(updated);
+      localStorage.setItem('favorites', JSON.stringify(updated));
+    }
+  };
 
   if (error) {
     return (
@@ -36,6 +48,8 @@ function CountryDetails() {
       </div>
     );
   }
+
+  const isFavorite = favorites.some((fav) => fav.cca3 === country.cca3);
 
   return (
     <motion.div
@@ -56,16 +70,16 @@ function CountryDetails() {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-4xl font-extrabold text-blue-800 dark:text-yellow-300 tracking-tight">
-          {country.name.common}
+          {country?.name?.common || 'N/A'}
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Country Code: {country.cca3}
+          Country Code: {country?.cca3 || 'N/A'}
         </p>
       </div>
 
       {/* Flag */}
       <div className="flex justify-center mb-10">
-        {country.flags?.svg ? (
+        {country?.flags?.svg ? (
           <img
             src={country.flags.svg}
             alt={`${country.name.common} flag`}
@@ -87,6 +101,8 @@ function CountryDetails() {
         <div><strong>Area:</strong> {country.area?.toLocaleString()} km²</div>
         <div><strong>Timezones:</strong> {country.timezones?.join(', ') || 'N/A'}</div>
         <div><strong>Languages:</strong> {country.languages ? Object.values(country.languages).join(', ') : 'N/A'}</div>
+        <div><strong>Currencies:</strong> {country.currencies ? Object.values(country.currencies).map(c => c.name).join(', ') : 'N/A'}</div>
+        <div><strong>Borders:</strong> {country.borders?.join(', ') || 'N/A'}</div>
       </div>
 
       {/* Buttons */}
@@ -100,11 +116,22 @@ function CountryDetails() {
           >
             View on Map
           </a>
-          <button
-            className="inline-block text-center bg-yellow-400 hover:bg-yellow-500 text-white px-6 py-2 rounded-full shadow-md transition duration-200"
-          >
-            Add to Favorites
-          </button>
+
+          {isFavorite ? (
+            <button
+              disabled
+              className="inline-block text-center bg-gray-400 text-white px-6 py-2 rounded-full shadow-md transition duration-200 cursor-not-allowed"
+            >
+              In Favorites
+            </button>
+          ) : (
+            <button
+              onClick={() => addToFavorites(country)}
+              className="inline-block text-center bg-yellow-400 hover:bg-yellow-500 text-white px-6 py-2 rounded-full shadow-md transition duration-200"
+            >
+              Add to Favorites
+            </button>
+          )}
         </div>
       )}
     </motion.div>
